@@ -12,7 +12,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { UserModule } from './user/user.module';
 import { AbilityModule } from './ability/ability.module';
 import { APP_GUARD } from '@nestjs/core';
-
+import { GraphQLJSONObject } from 'graphql-type-json';
 
 @Module({
   imports: [
@@ -28,19 +28,18 @@ import { APP_GUARD } from '@nestjs/core';
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: true,
       context: ({ req }) => ({ user: req.user }),
+      // resolvers: { JSON: GraphQLJSONObject}
     }),
     UserModule,
     AbilityModule,
   ],
   providers: [
-    AbilityFactory, 
-    PoliciesGuard,
-      {
-      provide: APP_GUARD,
-      useClass: PoliciesGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: PoliciesGuard, 
+    // },
   ],
 })
 export class AppModule {}

@@ -8,6 +8,7 @@ import {
 import { Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { RolePermission } from '../entities/role-permission.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 export enum Action {
   MANAGE = 'manage',
@@ -29,10 +30,10 @@ const subjectsMap: Record<string, typeof User> = {
 
 @Injectable()
 export class AbilityFactory {
-  constructor(
-    private readonly userRepo: Repository<User>,
-    private readonly rolePermRepo: Repository<RolePermission>,
-  ) {}
+    constructor(
+        @InjectRepository(User)
+        private readonly userRepo: Repository<User>,
+    ) {}
 
   async defineAbilityFor(userId: string): Promise<AppAbility> {
     const user = await this.userRepo.findOne({

@@ -1,0 +1,62 @@
+scalar JSON
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Permission {
+  id: ID!
+  action: String!
+  subject: String!
+  condition: JSONObject
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+type RolePermission {
+  id: ID!
+  roleId: String!
+  permissionId: String!
+}
+
+type Role {
+  id: String!
+  name: String!
+}
+
+type User {
+  id: ID!
+  email: String!
+  isAdmin: Boolean!
+  roleId: String!
+}
+
+type Query {
+  user(id: String!): User!
+  getRoles: [Role!]!
+  getPermissions: [Permission!]!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: String!): User!
+  createRole(name: String!): Role!
+  createPermission(action: String!, subject: String!, condition: String): Permission!
+  assignPermission(roleId: String!, permissionId: String!): RolePermission!
+}
+
+input CreateUserInput {
+  username: String!
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  username: String
+  email: String
+  password: String
+  id: Int!
+}
